@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+</head>
+<body>
+<strong th:text="${myname}"></strong>
+<form action="list.html" method="post">
+    <input type="hidden" name="pageNumber">
+    用户名：<input type="text" name="username">
+    <br/>
+    姓名：<input type="text" name="name">
+    <br/>
+    <button type="submit">提交</button> <button type="reset">重置</button>
+</form>
+</body>
+</html>
