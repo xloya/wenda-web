@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +32,7 @@ public class LoginController {
     @RequestMapping(path = {"/reg/"},method = {RequestMethod.POST})
     public String reg(Model model, @RequestParam("username") String username,
                                     @RequestParam("password") String password,
+                      @RequestParam(value = "next",required = false) String next,
                       HttpServletResponse response){
 
         try {
@@ -40,6 +42,8 @@ public class LoginController {
                 Cookie cookie = new Cookie("ticket",map.get("ticket"));
                 cookie.setPath("/");
                 response.addCookie(cookie);
+                if(!StringUtils.isEmpty(next))
+                    return "redirect:"+next;
                 return "redirect:/";
             }else{
                 model.addAttribute("msg", map.get("msg"));
@@ -57,8 +61,10 @@ public class LoginController {
      * @return 主页
      */
     @RequestMapping(path = {"/login/"},method = {RequestMethod.POST})
-    public String login(Model model, @RequestParam("username") String username,
+    public String login(Model model,
+                        @RequestParam("username") String username,
                         @RequestParam("password") String password,
+                        @RequestParam(value = "next",required = false) String next,
                         @RequestParam(value = "rememberme",defaultValue = "false")boolean rememberme,
                         HttpServletResponse response){
 
@@ -69,6 +75,8 @@ public class LoginController {
                 Cookie cookie = new Cookie("ticket",map.get("ticket"));
                 cookie.setPath("/");
                 response.addCookie(cookie);
+                if(!StringUtils.isEmpty(next))
+                    return "redirect:"+next;
                 return "redirect:/";
             }else{
                 model.addAttribute("msg", map.get("msg"));
@@ -81,7 +89,8 @@ public class LoginController {
     }
 
     @RequestMapping(path = {"/reglogin"},method = {RequestMethod.GET})
-    public String reglogin(Model model){
+    public String reglogin(Model model, @RequestParam(value = "next",required = false) String next){
+        model.addAttribute("next",next);
         return "login";
 
     }

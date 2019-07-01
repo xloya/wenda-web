@@ -35,14 +35,14 @@
                             <input type="password" name="password" aria-label="密码" placeholder="密码" required="">
                         </div>
                     </div>
-                    <input type="hidden" name="next" value="$!{next}"/>
+                    <input type="hidden" name="next" th:value="${next}"/>
                     <div class="button-wrapper command clearfix">
                         <button class="sign-button submit" type="submit" onclick="form=document.getElementById('regloginform');form.action='/login/'">登录</button>
                         <button class="sign-button submit" type="submit" onclick="form=document.getElementById('regloginform');form.action='/reg/'">注册</button>
                     </div>
                     <div class="signin-misc-wrapper clearfix">
                         <label class="remember-me">
-                            <input type="checkbox" name="rememberme" checked="" value="true"> 记住我
+                            <input type="checkbox" name="rememberme" checked="" value="false"> 记住我
                         </label>
                         <a class="unable-login" href="#">无法登录?</a>
                     </div>
