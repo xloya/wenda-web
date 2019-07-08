@@ -1,8 +1,29 @@
 package com.xloya.wenda.utils;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.security.MessageDigest;
 
 public class WenDaUtils {
+
+
+    public static int ANONYMOUS_USERID = 3;
+
+    public static String getJSONString(int code){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",code);
+
+        return jsonObject.toJSONString();
+    }
+
+    public static String getJSONString(int code,String message){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",code);
+        jsonObject.put("message",message);
+
+        return jsonObject.toJSONString();
+    }
+
 
     public static String MD5(String s) {
         char hexDigits[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};

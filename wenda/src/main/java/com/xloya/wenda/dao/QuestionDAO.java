@@ -15,6 +15,9 @@ public interface QuestionDAO {
     @Insert("insert into "+table_name+"("+insert_fields+") values(#{title},#{content},#{user_id},#{created_date},#{comment_count})")
     int addQuestion(Question question);
 
+    @Select("select "+select_fields+" from "+table_name+" where id = #{id}")
+    Question selectById(int id);
+
     @Select("<script>" +
             "select "+select_fields+" from "+table_name+
             "<if test='user_id!=0'>" +
@@ -26,8 +29,12 @@ public interface QuestionDAO {
                                         @Param("offset") int offset,
                                         @Param("limit")  int limit);
 
+
     @Update("update "+table_name+" set content=#{content} where id=#{id}")
     void updateContent(Question question);
+
+    @Update("update "+table_name+" set comment_count=#{comment_count} where id=#{id}")
+    void updateCommentCount(@Param("id")int id,@Param("comment_count")int  comment_count);
 
     @Delete("delete from "+table_name+" where id=#{id}")
     void deleteById(int id);
