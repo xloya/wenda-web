@@ -28,6 +28,9 @@ public class UserService {
         return userDAO.selectById(id);
     }
 
+    public User selectByName(String name) {
+        return userDAO.selectByName(name);
+    }
     /**
      * 注册
      * @param username 用户名
