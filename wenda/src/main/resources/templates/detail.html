@@ -14,8 +14,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="mobile-agent" content="format=html5;url=https://nowcoder.com/">
     <meta id="znonce" name="znonce" content="d3edc464cf014708819feffde7ddd01e">
-    <link rel="search" type="application/opensearchdescription+xml" href="https://nowcoder.com/static/search.xml" title="牛客">
+    <link rel="search" type="application/opensearchdescription+xml" href="https://nowcoder.com/static/search.xml" title="晓乎">
     <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/detail.css">
     <style>
         .zm-item-answer-author-info a.collapse {margin-top: 0}
     </style>
@@ -152,7 +153,7 @@
 
 
 
-<link rel="stylesheet" href="../styles/detail.css">
+
 <div class="zg-wrap zu-main clearfix with-indention-votebar" itemscope="" itemtype="http://schema.org/Question"
      id="zh-single-question-page" data-urltoken="36301524" role="main">
     <div class="zu-main-content">
@@ -230,23 +231,39 @@
                  data-widget="navigable" data-navigable-options="{&quot;items&quot;: &quot;&gt;.zm-item-answer&quot;}"
                  data-init="{&quot;params&quot;: {&quot;url_token&quot;: 36301524, &quot;pagesize&quot;: 10, &quot;offset&quot;: 0}, &quot;nodename&quot;: &quot;QuestionAnswerListV2&quot;}">
                 <div th:each="comment : ${comments}">
-                <div tabindex="-1" class="zm-item-answer  zm-item-expanded" itemprop="topAnswer" itemscope=""
-                     itemtype="http://schema.org/Answer" data-aid="22162611" data-atoken="66862039" data-collapsed="0"
-                     data-created="1444310527" data-deleted="0" data-helpful="1" data-isowner="0" data-copyable="1"
-                     data-za-module="AnswerItem">
+                <div  class="zm-item-answer  zm-item-expanded js-comment" >
                     <link itemprop="url" href="">
                     <meta itemprop="answer-id" content="22162611">
                     <meta itemprop="answer-url-token" content="66862039">
                     <a class="zg-anchor-hidden" name="answer-22162611"></a>
-                    <div class="zm-votebar goog-scrollfloater" data-za-module="VoteBar">
-                        <button class="up" aria-pressed="false" title="赞同">
+
+                    <div class="zm-votebar goog-scrollfloater js-vote" th:data-id="${comment.getObjects('comment').id}">
+                        <div th:if="${comment.getObjects('liked')>0}" >
+                            <button class="up js-like pressed"  title="赞同">
                             <i class="icon vote-arrow"></i>
-                            <span class="count">28</span>
-                            <span class="label sr-only">赞同</span></button>
-                        <button class="down" aria-pressed="false" title="反对，不会显示你的姓名">
+                            <span class="count" th:text="${comment.getObjects('likeCount')}"></span>
+                            <span class="label sr-only">赞同</span>
+                        </button>
+                        </div>
+                        <div th:if="${comment.getObjects('liked')<=0}" >
+                            <button class="up js-like"  title="赞同" >
+                                <i class="icon vote-arrow"></i>
+                                <span class="count" th:text="${comment.getObjects('likeCount')}"></span>
+                                <span class="label sr-only">赞同</span>
+                            </button>
+                        </div>
+                        <div th:if="${comment.getObjects('liked')<0}" >
+                        <button class="down js-dislike pressed" title="反对，不会显示你的姓名">
                             <i class="icon vote-arrow"></i>
                             <span class="label sr-only">反对，不会显示你的姓名</span></button>
+                        </div>
+                        <div th:if="${comment.getObjects('liked')>=0}">
+                            <button class="down js-dislike" title="反对，不会显示你的姓名">
+                                <i class="icon vote-arrow"></i>
+                                <span class="label sr-only">反对，不会显示你的姓名</span></button>
+                        </div>
                     </div>
+
                     <div class="answer-head">
                         <div class="zm-item-answer-author-info">
                             <a class="zm-item-link-avatar avatar-link" href="" target="_blank"
@@ -260,7 +277,7 @@
                         <div class="zm-item-vote-info" data-votecount="28" data-za-module="VoteInfo">
                                 <span class="voters text">
                                     <a href="" class="more text">
-                                        <span class="js-voteCount">28</span>&nbsp;人赞同</a></span>
+                                        <span class="js-voteCount" th:text="${comment.getObjects('likeCount')}"></span>&nbsp;人赞同</a></span>
                         </div>
                     </div>
                     <div class="zm-item-rich-text expandable js-collapse-body" data-resourceid="6727688"

@@ -4,6 +4,7 @@ package com.xloya.wenda.controller;
 
 import com.xloya.wenda.model.*;
 import com.xloya.wenda.service.CommentService;
+import com.xloya.wenda.service.LikeService;
 import com.xloya.wenda.service.QuestionService;
 import com.xloya.wenda.service.UserService;
 import com.xloya.wenda.utils.WenDaUtils;
@@ -31,6 +32,9 @@ public class QuestionController {
 
     @Autowired
     CommentService commentService;
+
+    @Autowired
+    LikeService likeService;
 
     @Autowired
     HostHolder hostHolder;
@@ -66,6 +70,12 @@ public class QuestionController {
         for(Comment comment : commentList){
             ViewObject viewObject = new ViewObject();
             viewObject.setObjects("comment",comment);
+            if(hostHolder.getUser()==null)
+                viewObject.setObjects("liked",0);
+            else
+                viewObject.setObjects("liked",likeService.getLikeStatus(hostHolder.getUser().getId(),EntityType.ENTITY_COMMENT,comment.getId()));
+
+            viewObject.setObjects("likeCount", likeService.getLikeCount(EntityType.ENTITY_COMMENT,comment.getId()));
             viewObject.setObjects("user",userService.getUser(comment.getUser_id()));
             comments.add(viewObject);
         }
