@@ -33,10 +33,10 @@ public class LikeService {
     }
 
     public long dislike(int user_id,int entity_type,int entity_id){
-        String dislikeKey = RedisKeyUtil.getLikeKey(entity_type, entity_id);
+        String dislikeKey = RedisKeyUtil.getDislikeKey(entity_type, entity_id);
         jedisAdapter.sadd(dislikeKey,String.valueOf(user_id));
 
-        String likeKey = RedisKeyUtil.getDislikeKey(entity_type, entity_id);
+        String likeKey = RedisKeyUtil.getLikeKey(entity_type, entity_id);
         jedisAdapter.srem(likeKey,String.valueOf(user_id));
 
         return jedisAdapter.scard(likeKey);

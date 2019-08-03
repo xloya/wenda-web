@@ -35,4 +35,8 @@ public class CommentService {
     public boolean deleteComment(int id){
        return commentDAO.updateStatusById(id,1) > 0;
     }
+
+    public Comment getCommentById(int id){
+        return commentDAO.getCommentById(id);
+    }
 }

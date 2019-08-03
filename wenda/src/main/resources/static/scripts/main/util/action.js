@@ -66,6 +66,7 @@
             nCode === 0 && oConf.call && oConf.call(oResult);
             nCode !== 0 && oConf.error && oConf.error(oResult);
         }).fail(oConf.error).always(oConf.always);
+        window.location.href = window.location.href;
     }
 
 

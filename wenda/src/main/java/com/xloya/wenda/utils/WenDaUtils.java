@@ -8,6 +8,7 @@ public class WenDaUtils {
 
 
     public static int ANONYMOUS_USERID = 3;
+    public static int SYSTEM_USERID = 5;
 
     public static String getJSONString(int code){
         JSONObject jsonObject = new JSONObject();

@@ -184,7 +184,7 @@
                         <div th:text="${conversation.getObjects('user').name}"></div>
                     </a>
                     <p class="letter-brief">
-                    <a th:href="'/msg/detail?conversationId='+${conversation.getObjects('conversation').conversation_id}">
+                    <a th:href="'/msg/detail?conversation_id='+${conversation.getObjects('conversation').conversation_id}">
                         <span th:text="${conversation.getObjects('conversation').content}"></span>
                     </a>
                     </p>

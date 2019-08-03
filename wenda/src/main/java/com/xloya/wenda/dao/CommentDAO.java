@@ -29,4 +29,8 @@ public interface CommentDAO {
 
     @Update("update "+table_name+" set status=#{status} where id=#{id}")
     int updateStatusById(@Param("id") int id,@Param("status") int status);
+
+    @Select("select "+select_fields+" from "+table_name+
+            " where id = #{id}")
+    Comment getCommentById(int id);
 }

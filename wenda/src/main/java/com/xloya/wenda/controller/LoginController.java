@@ -1,6 +1,9 @@
 package com.xloya.wenda.controller;
 
 
+import com.xloya.wenda.async.EventModel;
+import com.xloya.wenda.async.EventProducer;
+import com.xloya.wenda.async.EventType;
 import com.xloya.wenda.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +27,9 @@ public class LoginController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    EventProducer eventProducer;
+
     /**
      * 注册
      * @param model
@@ -32,15 +38,19 @@ public class LoginController {
     @RequestMapping(path = {"/reg/"},method = {RequestMethod.POST})
     public String reg(Model model, @RequestParam("username") String username,
                                     @RequestParam("password") String password,
+                      @RequestParam(value="rememberme", defaultValue = "false") boolean rememberme,
                       @RequestParam(value = "next",required = false) String next,
                       HttpServletResponse response){
 
         try {
-            Map<String, String> map = userService.register(username, password);
+            Map<String, Object> map = userService.register(username, password);
 
             if (map.containsKey("ticket")) {
-                Cookie cookie = new Cookie("ticket",map.get("ticket"));
+                Cookie cookie = new Cookie("ticket",map.get("ticket").toString());
                 cookie.setPath("/");
+                if (rememberme) {
+                    cookie.setMaxAge(3600*24*5);
+                }
                 response.addCookie(cookie);
                 if(!StringUtils.isEmpty(next))
                     return "redirect:"+next;
@@ -69,21 +79,33 @@ public class LoginController {
                         HttpServletResponse response){
 
         try {
-            Map<String, String> map = userService.login(username, password);
+            Map<String, Object> map = userService.login(username, password);
 
             if (map.containsKey("ticket")) {
-                Cookie cookie = new Cookie("ticket",map.get("ticket"));
+                Cookie cookie = new Cookie("ticket",map.get("ticket").toString());
                 cookie.setPath("/");
+                if (rememberme) {
+                    cookie.setMaxAge(3600*24*5);
+                }
                 response.addCookie(cookie);
+                /* 登录异常处理器
+                eventProducer.fireEvent(new EventModel(EventType.LOGIN)
+                        .setExt("email","xxxx")
+                        .setExt("username",username)
+                        .setActor_id((int)map.get("userId")));
+                */
                 if(!StringUtils.isEmpty(next))
                     return "redirect:"+next;
                 return "redirect:/";
             }else{
                 model.addAttribute("msg", map.get("msg"));
+
                 return "login";
             }
-        }catch (Exception e){
-            LOGGER.error("注册异常"+e.getMessage());
+        }
+        catch (Exception e){
+            LOGGER.error("登录异常"+e.getMessage());
+
             return "login";
         }
     }
