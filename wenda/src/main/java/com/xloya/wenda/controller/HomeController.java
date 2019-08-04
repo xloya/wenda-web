@@ -1,7 +1,9 @@
 package com.xloya.wenda.controller;
 
-import com.xloya.wenda.model.Question;
-import com.xloya.wenda.model.ViewObject;
+
+import com.xloya.wenda.model.*;
+import com.xloya.wenda.service.CommentService;
+import com.xloya.wenda.service.FollowService;
 import com.xloya.wenda.service.QuestionService;
 import com.xloya.wenda.service.UserService;
 import org.slf4j.Logger;
@@ -25,6 +27,15 @@ public class HomeController {
     @Autowired
     QuestionService questionService;
 
+    @Autowired
+    CommentService commentService;
+
+    @Autowired
+    FollowService followService;
+
+    @Autowired
+    HostHolder hostHolder;
+
     /**
      * 获取特定用户的问题
      *
@@ -32,14 +43,24 @@ public class HomeController {
      * @param user_id 用户id
      * @return 用户问题页面
      */
-    @RequestMapping(path = {"/user/{user_id}"}, method = {RequestMethod.GET})
+    @RequestMapping(path = {"/user/{user_id}"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String userIndex(Model model, @PathVariable("user_id") int user_id) {
-        try {
-            model.addAttribute("vos", getQuestions(user_id, 0, 10));
-        } catch (Exception e) {
-            LOGGER.error("获取用户问题异常" + e.getMessage());
+
+        model.addAttribute("vos", getQuestions(user_id, 0, 10));
+
+        User user = userService.getUser(user_id);
+        ViewObject vo = new ViewObject();
+        vo.setObjects("user", user);
+        vo.setObjects("commentCount", commentService.getUserCommentCount(user_id));
+        vo.setObjects("followerCount", followService.getFollowerCount(EntityType.ENTITY_USER, user_id));
+        vo.setObjects("followeeCount", followService.getFolloweeCount( EntityType.ENTITY_USER,user_id));
+        if (hostHolder.getUser() != null) {
+            vo.setObjects("followed", followService.isFollower(EntityType.ENTITY_USER,user_id,hostHolder.getUser().getId()));
+        } else {
+            vo.setObjects("followed", false);
         }
-        return "index";
+        model.addAttribute("profileUser", vo);
+        return "profile";
     }
 
     /**
@@ -48,7 +69,7 @@ public class HomeController {
      * @param model 装填前10个问题
      * @return 主页
      */
-    @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET})
+    @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String index(Model model) {
         try {
             model.addAttribute("vos", getQuestions(0, 0, 10));
@@ -72,6 +93,7 @@ public class HomeController {
         for (Question question : questionList) {
             ViewObject viewObject = new ViewObject();
             viewObject.setObjects("question", question);
+            viewObject.setObjects("followCount", followService.getFollowerCount(EntityType.ENTITY_QUESTION, question.getId()));
             viewObject.setObjects("user", userService.getUser(question.getUser_id()));
             vos.add(viewObject);
         }

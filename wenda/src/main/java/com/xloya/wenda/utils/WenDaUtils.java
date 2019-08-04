@@ -3,6 +3,7 @@ package com.xloya.wenda.utils;
 import com.alibaba.fastjson.JSONObject;
 
 import java.security.MessageDigest;
+import java.util.Map;
 
 public class WenDaUtils {
 
@@ -25,6 +26,14 @@ public class WenDaUtils {
         return jsonObject.toJSONString();
     }
 
+    public static String getJSONString(int code, Map<String, Object> map) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", code);
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            jsonObject.put(entry.getKey(), entry.getValue());
+        }
+        return jsonObject.toJSONString();
+    }
 
     public static String MD5(String s) {
         char hexDigits[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};

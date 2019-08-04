@@ -8,8 +8,11 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Transaction;
+
 
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -111,5 +114,95 @@ public class JedisAdapter implements InitializingBean {
             }
         }
         return 0;
+    }
+
+    public Jedis getJedis(){
+        return jedisPool.getResource();
+    }
+
+    public Transaction multi(Jedis jedis){
+        try{
+            return jedis.multi();
+        }catch (Exception e){
+            LOGGER.error("发生异常"+e.getMessage());
+        }
+
+        return null;
+    }
+
+    public List<Object> exec(Transaction tx,Jedis jedis){
+        try{
+            return tx.exec();
+        }catch (Exception e){
+            LOGGER.error("发生异常"+e.getMessage());
+        }finally {
+            if(tx!=null)
+                tx.close();
+
+            if(jedis!=null)
+                jedis.close();
+        }
+
+        return null;
+    }
+
+    public long zadd(String key,double score,String value){
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.zadd(key,score,value);
+        } catch (Exception e) {
+            LOGGER.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return 0;
+    }
+
+    public Set<String> zrevrange(String key, int start, int end){
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.zrevrange(key,start,end);
+        } catch (Exception e) {
+            LOGGER.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
+    }
+
+    public long zcard(String key){
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.zcard(key);
+        } catch (Exception e) {
+            LOGGER.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return 0;
+    }
+
+    public Double zscore(String key,String member){
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.zscore(key,member);
+        } catch (Exception e) {
+            LOGGER.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
     }
 }

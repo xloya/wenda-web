@@ -32,31 +32,31 @@
                 </ul>
             </div>
             <div th:if="${user!=null}">
-                    <a th:href="'/user/'+${user.id}" class="zu-top-nav-userinfo " id=":0" role="button" aria-haspopup="true" aria-activedescendant="">
-                        <span class="name" th:text="${user.name}"></span>
-                        <img class="Avatar" th:src="${user.head_url}" th:alt="${user.name}">
-                        <span id="zh-top-nav-new-pm" class="zg-noti-number zu-top-nav-pm-count" style="visibility:hidden" data-count="0">
+                <a th:href="'/user/'+${user.id}" class="zu-top-nav-userinfo " id=":0" role="button" aria-haspopup="true" aria-activedescendant="">
+                    <span class="name" th:text="${user.name}"></span>
+                    <img class="Avatar" th:src="${user.head_url}" th:alt="${user.name}">
+                    <span id="zh-top-nav-new-pm" class="zg-noti-number zu-top-nav-pm-count" style="visibility:hidden" data-count="0">
                     </span>
-                    </a>
-                    <ul class="top-nav-dropdown" id="top-nav-profile-dropdown" aria-labelledby=":0">
-                        <li>
-                            <a th:href="'/user/'+${user.id}" tabindex="-1" id=":1">
-                                <i class="zg-icon zg-icon-dd-home"></i>我的主页
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/msg/list" tabindex="-1" id=":2">
-                                <i class="zg-icon zg-icon-dd-pm"></i>私信
-                                <span id="zh-top-nav-pm-count" class="zu-top-nav-pm-count zg-noti-number" style="visibility:hidden" data-count="0">
+                </a>
+                <ul class="top-nav-dropdown" id="top-nav-profile-dropdown" aria-labelledby=":0">
+                    <li>
+                        <a th:href="'/user/'+${user.id}" tabindex="-1" id=":1">
+                            <i class="zg-icon zg-icon-dd-home"></i>我的主页
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/msg/list" tabindex="-1" id=":2">
+                            <i class="zg-icon zg-icon-dd-pm"></i>私信
+                            <span id="zh-top-nav-pm-count" class="zu-top-nav-pm-count zg-noti-number" style="visibility:hidden" data-count="0">
                     </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/logout" tabindex="-1" id=":4">
-                                <i class="zg-icon zg-icon-dd-logout"></i>退出
-                            </a>
-                        </li>
-                    </ul>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/logout" tabindex="-1" id=":4">
+                            <i class="zg-icon zg-icon-dd-logout"></i>退出
+                        </a>
+                    </li>
+                </ul>
             </div>
 
         </div>
@@ -139,106 +139,76 @@
         </div>
     </div>
 </div>
-    <div class="zu-global-notify" id="zh-global-message" style="display:none">
-        <div class="zg-wrap">
-            <div class="zu-global-nitify-inner">
+<div class="zu-global-notify" id="zh-global-message" style="display:none">
+    <div class="zg-wrap">
+        <div class="zu-global-nitify-inner">
             <a class="zu-global-notify-close" href="javascript:;" title="关闭" name="close">x</a>
             <span class="zu-global-notify-icon"></span>
             <span class="zu-global-notify-msg"></span>
-            </div>
         </div>
     </div>
+</div>
 
 
 
-    <div class="zg-wrap zu-main clearfix " role="main">
-        <div class="zu-main-content">
-            <div class="zu-main-content-inner">
-                <div class="zg-section" id="zh-home-list-title">
-                    <i class="zg-icon zg-icon-feedlist"></i>最新动态
-                    <input type="hidden" id="is-topstory">
-                    <span class="zg-right zm-noti-cleaner-setting" style="list-style:none">
-                        <a href="https://nowcoder.com/settings/filter" class="zg-link-gray-normal">
-                            <i class="zg-icon zg-icon-settings"></i>设置</a></span>
+<link rel="stylesheet" href="../../styles/result.css">
+<link rel="stylesheet" href="../../styles/detail.css">
+    <div id="main">
+        <div class="zg-wrap zu-main clearfix ">
+            <div class="zm-profile-section-wrap zm-profile-followee-page">
+                <div class="zm-profile-section-head">
+                    <span class="zm-profile-section-name">
+                        <a href="#" th:text="${curUser.name}"></a> 关注了 <span th:text="${followeeCount}"></span>人
+                    </span>
                 </div>
-                <div class="zu-main-feed-con navigable" data-feedtype="topstory" id="zh-question-list" data-widget="navigable" data-navigable-options="{&quot;items&quot;:&quot;&gt; .zh-general-list .feed-content&quot;,&quot;offsetTop&quot;:-82}">
-                    <a href="javascript:;" class="zu-main-feed-fresh-button" id="zh-main-feed-fresh-button" style="display:none"></a>
-                    <div id="js-home-feed-list" class="zh-general-list topstory clearfix" data-init="{&quot;params&quot;: {}, &quot;nodename&quot;: &quot;TopStory2FeedList&quot;}" data-delayed="true" data-za-module="TopStoryFeedList">
-                        <tr th:each="vo : ${vos}">
-                        <div class="feed-item folding feed-item-hook feed-item-1
-                        " feed-item-p="" data-type="p" id="feed-1" data-za-module="FeedItem" data-za-index="">
-                            <meta itemprop="ZReactor" data-id="113477" data-meta="{&quot;source_type&quot;: &quot;promotion_article&quot;, &quot;voteups&quot;: 1082, &quot;comments&quot;: 100, &quot;source&quot;: []}">
-                            <div class="feed-item-inner">
-                                <div class="avatar">
-                                    <a th:title="${vo.getObjects('user').name}" data-tip="p$t$zhao-yong-feng" class="zm-item-link-avatar" target="_blank">
-                                        <img th:src="${vo.getObjects('user').head_url}"></a>
+                <div class="zm-profile-section-list">
+                    <div id="zh-profile-follows-list">
+                        <div class="zh-general-list clearfix">
+                            <tr th:each="vo : ${followees}">
+                            <div class="zm-profile-card zm-profile-section-item zg-clear no-hovercard">
+                                <div th:if="${vo.getObjects('followed')!=false}">
+                                <div class="zg-right">
+                                    <button class="zg-btn zg-btn-unfollow zm-rich-follow-btn small nth-0
+                                    js-follow-user" data-status="1" th:data-id="${vo.getObjects('user').id}">取消关注</button>
                                 </div>
-                                <div class="feed-main">
-                                    <div class="feed-content" data-za-module="PostItem">
-                                        <meta itemprop="post-id" content="113477">
-                                        <meta itemprop="post-url-token" content="19831487">
-                                        <h2 class="feed-title">
-                                            <a target="_blank" class="post-link" th:href="'/question/'+${vo.getObjects('question').id}"><span th:text="${vo.getObjects('question').title}"></span></a></h2>
-                                        <div class="entry-body post-body js-collapse-body">
-                                            <div class="zm-item-vote">
-                                                <a class="zm-item-vote-count js-expand js-vote-count" href="javascript:;" data-bind-votecount="">
-                                                    <span class="count" th:text="${vo.getObjects('followCount')}"></span>
-                                                </a></div>
-                                            <div class="zm-votebar" data-za-module="VoteBar">
-                                                <button class="up" aria-pressed="false" title="赞同">
-                                                    <i class="icon vote-arrow"></i>
-                                                    <span class="count" th:text="${vo.getObjects('followCount')}"></span>
-                                                    <span class="label sr-only">赞同</span></button>
-                                            </div>
-                                            <div class="author-info">
-                                                <a th:href="'/user/'+${vo.getObjects('question').user_id}" data-tip="1" class="name"><span th:text="${vo.getObjects('user').name}+','"></span></a>
-                                                <span th:text="${#dates.format(vo.getObjects('question').created_date, 'yyyy年MM月dd日 HH:mm:ss')}"></span>
-                                            </div>
-                                            <div class="zm-item-vote-info" data-votecount="1082" data-za-module="VoteInfo">
-                                                <span class="voters text">
-                                                    <a href="#" class="more text">
-                                                        <span class="js-voteCount">1082</span>&nbsp;人赞</a></span>
-                                            </div>
-                                            <div class="post-content"  data-entry-url="http://zhuanlan.zhihu.com/p/19831487">
+                                </div>
+                                <div th:if="${vo.getObjects('followed')==false}">
+                                <div class="zg-right">
+                                    <button class="zg-btn zg-btn-follow zm-rich-follow-btn small nth-0
+                                    js-follow-user" th:data-id="${vo.getObjects('user').id}">关注</button>
+                                </div>
+                                </div>
+                                <a title="Barty" class="zm-item-link-avatar" th:href="'/user/'+${vo.getObjects('user').id}">
+                                    <img th:src="${vo.getObjects('user').head_url}" class="zm-item-img-avatar">
+                                </a>
+                                <div class="zm-list-content-medium">
+                                    <h2 class="zm-list-content-title"><a data-tip="p$t$buaabarty" th:href="'/user/'+${vo.getObjects('user').id}" class="zg-link" title="Barty">
+                                        <span th:text="${vo.getObjects('user').name}"></span></a></h2>
 
-                                                <div class="zh-summary summary clearfix"><span th:text="${vo.getObjects('question').content}"></span></div>
-                                        </div>
-                                        <div class="feed-meta">
-                                            <div class="zm-item-meta meta clearfix js-contentActions">
-                                                <div class="zm-meta-panel">
-                                                    <a href="#" class="meta-item toggle-comment js-toggleCommentBox">
-                                                        <i class="z-icon-comment"></i><span th:text="${vo.getObjects('question').comment_count}"></span>条评论</a>
-                                                    <a href="#" class="meta-item zu-autohide js-share goog-inline-block goog-menu-button" role="button" aria-expanded="false" tabindex="0" aria-haspopup="true" style="-webkit-user-select: none;">
-                                                        <div class="goog-inline-block goog-menu-button-outer-box">
-                                                            <div class="goog-inline-block goog-menu-button-inner-box">
-                                                                <div class="goog-inline-block goog-menu-button-caption">
-                                                                    <i class="z-icon-share"></i>分享</div>
-                                                                <div class="goog-inline-block goog-menu-button-dropdown">&nbsp;</div></div>
-                                                        </div>
-                                                    </a>
-                                                    <span class="zg-bull zu-autohide">•</span>
-                                                    <a href="#" class="meta-item zu-autohide js-report">举报</a>
-                                                    <button class="meta-item item-collapse js-collapse">
-                                                        <i class="z-icon-fold"></i>收起</button>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="ignore zu-autohide" name="dislike" data-tip="s$b$不感兴趣"></a>
-                                        </div>
+                                    <!-- <div class="zg-big-gray">计蒜客教研首席打杂</div> -->
+                                    <div class="details zg-gray">
+                                        <a target="_blank" th:href="'/user/'+${vo.getObjects('user').id}+'/followers'" class="zg-link-gray-normal">
+                                            <span th:text="${vo.getObjects('followerCount')}"></span>粉丝</a>
+                                        /
+                                        <a target="_blank" th:href="'/user/'+${vo.getObjects('user').id}+'/followees'" class="zg-link-gray-normal">
+                                            <span th:text="${vo.getObjects('followeeCount')}"></span>关注</a>
+                                        /
+                                        <a target="_blank" href="#" class="zg-link-gray-normal">
+                                            <span th:text="${vo.getObjects('commentCount')}"></span>回答</a>
+                                        /
+                                        <a target="_blank" href="#" class="zg-link-gray-normal">548 赞同</a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="undo-dislike-options" data-item_id="1">此内容将不会在动态中再次显示
-                                <span class="zg-bull">•</span>
-                                <a href="#" class="meta-item revert">撤销</a>
-                                <a href="#" class="ignore zu-autohide close"></a>
-                            </div></div>
+                            </tr>
                         </div>
-                        </tr>
+                        <a aria-role="button" class="zg-btn-white zu-button-more">更多</a>
                     </div>
-                    <a href="javascript:;" id="zh-load-more" data-method="next" class="zg-btn-white zg-r3px zu-button-more" style="">更多</a></div>
+                </div>
             </div>
         </div>
     </div>
+
 <script type="text/javascript" src="/scripts/main/jquery.js"></script>
 <script type="text/javascript" src="/scripts/main/base/base.js"></script>
 <script type="text/javascript" src="/scripts/main/base/util.js"></script>
@@ -250,5 +220,5 @@
 <script type="text/javascript" src="/scripts/main/component/popupAdd.js"></script>
 <script type="text/javascript" src="/scripts/main/component/popupMsg.js"></script>
 <script type="text/javascript" src="/scripts/main/site/home.js"></script>
-<script type="text/javascript" src="/scripts/main/site/detail.js"></script>
-    </body></html>
+<script type="text/javascript" src="/scripts/main/site/follow.js"></script>
+</body></html>

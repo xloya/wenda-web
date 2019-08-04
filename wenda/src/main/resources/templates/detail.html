@@ -73,7 +73,7 @@
         <div id="zg-top-nav" class="zu-top-nav">
             <ul class="zu-top-nav-ul zg-clear">
                 <li class="zu-top-nav-li current" id="zh-top-nav-home">
-                    <a class="zu-top-nav-link" href="https://nowcoder.com/" id="zh-top-link-home" data-za-c="view_home" data-za-a="visit_home" data-za-l="top_navigation_home">首页</a>
+                    <a class="zu-top-nav-link" href="/" id="zh-top-link-home" data-za-c="view_home" data-za-a="visit_home" data-za-l="top_navigation_home">首页</a>
                 </li>
                 <li class="zu-top-nav-li " id="zh-top-nav-explore">
                     <a class="zu-top-nav-link" href="https://nowcoder.com/explore">发现</a>
@@ -183,44 +183,29 @@
             </div>
             <div class="zm-side-section">
                 <div class="zm-side-section-inner" id="zh-question-side-header-wrap">
-                    <button data-follow="q:m:button" class="follow-button zg-follow zg-btn-green" data-id="6727688">
+                    <div th:if="${followed}!=false">
+                    <button class="follow-button zg-follow zg-btn-white js-follow-question" th:data-id="${question.id}"
+                            data-status="1">
+                        取消关注
+                    </button>
+                    </div>
+                    <div th:if="${followed}==false">
+                    <button class="follow-button zg-follow zg-btn-green js-follow-question" th:data-id="${question.id}">
                         关注问题
                     </button>
+                    </div>
                     <div class="zh-question-followers-sidebar">
                         <div class="zg-gray-normal">
-                            <a href="">
-                                <strong>9</strong></a>人关注该问题
+                            <a href="javascript:void(0);"><strong class="js-user-count">
+                                <span th:text="${followUsers.size()}" ></span></strong></a>人关注该问题
                         </div>
-                        <div class="list zu-small-avatar-list zg-clear">
-                                <span class="zm-item-link-avatar">
-                                    <img title="匿名用户" class="zm-item-img-avatar"
-                                         src="../images/res/aadd7b895_s.jpg"></span>
-                            <a data-tip="p$b$yi-yi-98-91-99" class="zm-item-link-avatar" href=""
-                               data-original_title="奕奕">
-                                <img src="../images/res/6ceea810748d179f57cac0baa5cf9592_s.jpg"
+                        <div class="list zu-small-avatar-list zg-clear js-user-list">
+                            <tr th:each="vo : ${followUsers}">
+                            <a th:class="zm-item-link-avatar" th:href="'/user/'+${vo.getObjects('id')}"
+                               th:data-original_title="${vo.getObjects('name')}">
+                                <img th:src="${vo.getObjects('head_url')}"
                                      class="zm-item-img-avatar"></a>
-                            <a data-tip="p$b$wang-wu-29-54" class="zm-item-link-avatar" href=""
-                               data-original_title="王五">
-                                <img src="../images/res/da8e974dc_s.jpg" class="zm-item-img-avatar"></a>
-                            <a data-tip="p$b$huang-xiang-90-99" class="zm-item-link-avatar" href=""
-                               data-original_title="案小声">
-                                <img src="../images/res/19456ebfe8b207320735f282769ac635_s.jpg"
-                                     class="zm-item-img-avatar"></a>
-                            <a data-tip="p$b$yingxiaodao" class="zm-item-link-avatar" href="" data-original_title="营销岛">
-                                <img src="../images/res/11be4a90ed938abfbab4899df56ee754_s.png"
-                                     class="zm-item-img-avatar"></a>
-                            <a data-tip="p$b$hero-hou-23" class="zm-item-link-avatar" href=""
-                               data-original_title="Hero Hou">
-                                <img src="../images/res/da8e974dc_s.jpg" class="zm-item-img-avatar"></a>
-                            <a data-tip="p$b$jin-hua-zhang-10" class="zm-item-link-avatar" href=""
-                               data-original_title="荷尔蒙毒品">
-                                <img src="../images/res/d207854fffc9e0289fbd6bbbb3986988_s.jpg"
-                                     class="zm-item-img-avatar"></a>
-                            <a title="宇轩" data-tip="p$t$yu-xuan-91-11" class="zm-item-link-avatar" href="">
-                                <img src="../images/res/1ac7840eeb19ada0bbf85f51702d5784_s.jpg"
-                                     class="zm-item-img-avatar"></a>
-                            <a title="尹锋" data-tip="p$t$yin-feng" class="zm-item-link-avatar" href="">
-                                <img src="../images/res/da8e974dc_s.jpg" class="zm-item-img-avatar"></a>
+                            </tr>
                         </div>
                     </div>
                 </div>
@@ -240,14 +225,14 @@
                         <div th:if="${comment.getObjects('liked')>0}" >
                             <button class="up js-like pressed"  title="赞同" >
                                 <i class="icon vote-arrow"></i>
-                                <span class="count" th:text="${comment.getObjects('likeCount')}"></span>
+                                <span class="count js-voteCount" th:text="${comment.getObjects('likeCount')}"></span>
                                 <span class="label sr-only">赞同</span>
                             </button>
                         </div>
                         <div th:if="${comment.getObjects('liked')<=0}" >
                             <button class="up js-like"  title="赞同" >
                                 <i class="icon vote-arrow"></i>
-                                <span class="count" th:text="${comment.getObjects('likeCount')}"></span>
+                                <span class="count js-voteCount" th:text="${comment.getObjects('likeCount')}"></span>
                                 <span class="label sr-only">赞同</span>
                             </button>
                         </div>
@@ -324,13 +309,15 @@
 <script type="text/javascript" src="/scripts/main/base/base.js"></script>
 <script type="text/javascript" src="/scripts/main/base/util.js"></script>
 <script type="text/javascript" src="/scripts/main/base/event.js"></script>
+<script type="text/javascript" src="/scripts/main/util/action.js"></script>
+<script type="text/javascript" src="/scripts/main/util/business.js"></script>
 <script type="text/javascript" src="/scripts/main/component/component.js"></script>
 <script type="text/javascript" src="/scripts/main/component/popup.js"></script>
 <script type="text/javascript" src="/scripts/main/component/popupAdd.js"></script>
 <script type="text/javascript" src="/scripts/main/component/popupMsg.js"></script>
 <script type="text/javascript" src="/scripts/main/site/home.js"></script>
 <script type="text/javascript" src="/scripts/main/site/detail.js"></script>
-<script type="text/javascript" src="/scripts/main/util/action.js"></script>
+
 </body>
 
 </html>
