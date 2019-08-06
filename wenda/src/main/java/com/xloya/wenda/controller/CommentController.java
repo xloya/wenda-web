@@ -1,6 +1,9 @@
 package com.xloya.wenda.controller;
 
 
+import com.xloya.wenda.async.EventModel;
+import com.xloya.wenda.async.EventProducer;
+import com.xloya.wenda.async.EventType;
 import com.xloya.wenda.model.Comment;
 import com.xloya.wenda.model.EntityType;
 import com.xloya.wenda.model.HostHolder;
@@ -29,6 +32,11 @@ public class CommentController {
     @Autowired
     QuestionService questionService;
 
+
+    @Autowired
+    EventProducer eventProducer;
+
+
     @RequestMapping(path = "/addComment",method = {RequestMethod.POST})
     public String addComment(@RequestParam("questionId")int questionId,
                              @RequestParam("content")String content){
@@ -48,6 +56,8 @@ public class CommentController {
             int count = commentService.getCommentCount(comment.getEntity_id(),EntityType.ENTITY_QUESTION);
             questionService.updateCommentCount(comment.getEntity_id(),count);
 
+            eventProducer.fireEvent(new EventModel(EventType.COMMENT).setActor_id(comment.getUser_id())
+                    .setEntity_id(questionId));
         }catch(Exception e){
             LOGGER.error("添加评论失败"+e.getMessage());
         }

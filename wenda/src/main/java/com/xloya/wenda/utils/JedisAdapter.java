@@ -116,6 +116,22 @@ public class JedisAdapter implements InitializingBean {
         return 0;
     }
 
+    public List<String> lrange(String key, int start, int end) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.lrange(key, start, end);
+        } catch (Exception e) {
+            LOGGER.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
+    }
+
+
     public Jedis getJedis(){
         return jedisPool.getResource();
     }
