@@ -2,6 +2,9 @@ package com.xloya.wenda.controller;
 
 
 
+import com.xloya.wenda.async.EventModel;
+import com.xloya.wenda.async.EventProducer;
+import com.xloya.wenda.async.EventType;
 import com.xloya.wenda.model.*;
 import com.xloya.wenda.service.*;
 import com.xloya.wenda.utils.WenDaUtils;
@@ -39,6 +42,10 @@ public class QuestionController {
     @Autowired
     FollowService followService;
 
+
+    @Autowired
+    EventProducer eventProducer;
+
     @RequestMapping(path = "/question/add", method = {RequestMethod.POST})
     @ResponseBody
     public String addQuestion(@RequestParam("title")String title, @RequestParam("content")String content){
@@ -51,8 +58,12 @@ public class QuestionController {
                 return WenDaUtils.getJSONString(999);
             else
                 question.setUser_id(hostHolder.getUser().getId());
-            if(questionService.addQuestion(question) > 0)
+            if(questionService.addQuestion(question) > 0) {
+                eventProducer.fireEvent(new EventModel(EventType.ADD_QUESTION)
+                        .setActor_id(question.getUser_id()).setEntity_id(question.getId())
+                        .setExt("title", question.getTitle()).setExt("content", question.getContent()));
                 return WenDaUtils.getJSONString(0);
+            }
         }catch (Exception e){
             LOGGER.error("增加问题失败"+e.getMessage());
         }
