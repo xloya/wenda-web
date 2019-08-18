@@ -6,6 +6,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
+/*
 class MyThread extends Thread{
     private int tid;
 
@@ -145,7 +146,8 @@ public class MultiThreadTests {
 
 
     public static void testThreadLocal(){
-        /*
+        */
+/*
         for(int i=0;i<10;i++){
             final int finalI = i;
             new Thread(new Runnable() {
@@ -160,7 +162,8 @@ public class MultiThreadTests {
                     }
                 }
             }).start();
-        }*/
+        }*//*
+
 
         for(int i=0;i<10;i++){
             final int finalI = i;
@@ -297,3 +300,4 @@ public class MultiThreadTests {
         testFuture();
     }
 }
+*/

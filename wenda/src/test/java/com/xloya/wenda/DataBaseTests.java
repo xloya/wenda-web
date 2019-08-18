@@ -1,5 +1,5 @@
 package com.xloya.wenda;
-
+/*
 import com.xloya.wenda.dao.QuestionDAO;
 import com.xloya.wenda.dao.UserDAO;
 import com.xloya.wenda.model.Question;
@@ -48,3 +48,4 @@ public class DataBaseTests {
 
 
 }
+*/
