@@ -27,4 +27,4 @@
 ## 8月11日
 利用solr实现问题全文搜素
 
-![首页图片]https://github.com/xloya/wenda-web/blob/master/home.jpg
+![首页图片](https://github.com/xloya/wenda-web/blob/master/home.jpg)
